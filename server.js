@@ -14,7 +14,7 @@ app.use(express.static(__dirname)) // hosting a static file from index.html
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 
-var dbUrl = 'mongodb+srv://cluster0.ukcpx.mongodb.net/<dbname>'
+var dbUrl = 'mongodb+srv://cluster0.ukcpx.mongodb.net/nodejsessential'
 var Message = mongoose.model('Message' , {
 
     name: String,
@@ -37,6 +37,12 @@ app.post('/messages', (req,res) => {
     messages.save((err) => {
         if(err){
             sendStatus(500)
+
+        Message.findOne({message: 'badword'}, (err, cesored) => {
+            if(censored){
+                console.log('censored word found', censored)
+            }
+        })
 
         io.emit('message',req.body)
         res.sendStatus(200)
